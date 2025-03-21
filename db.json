@@ -1,0 +1,14 @@
+{
+  "posts": [
+    {
+      "id": "67d7",
+      "title": "teste1",
+      "body": "conteudo1"
+    },
+    {
+      "title": "titulo3",
+      "body": "conteudo3",
+      "id": "cb14"
+    }
+  ]
+}
