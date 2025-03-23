@@ -1,71 +1,130 @@
-const API_URL = 'http://localhost:3000/posts';
+ //POST
+ function enviarDados(){
+    const nome = document.getElementById('nome').value;
+    const idade = document.getElementById('idade').value;
+    const cpf = document.getElementById('cpfCadastro').value;
 
-// Função para criar um post
-document.getElementById('postForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const title = document.getElementById('title').value;
-    const body = document.getElementById('body').value;
-
-    const response = await fetch(API_URL, {
+    fetch('pessoas',{
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ title, body }),
+        body: JSON.stringify({ nome: nome, idade: idade, cpf: cpf})
+    })
+    .then(response => response.json())
+    .then(data => {
+        // atualiza os valores na tela
+        //document.getElementById('mostrarNome').textContent = data.nome;
+        //document.getElementById('mostrarIdade').textContent = data.idade;
+        //document.getElementById('mostrarCpf').textContent = data.cpf;
+    
+        // limpa os inputs do formulário
+        document.getElementById('nome').value = '';
+        document.getElementById('idade').value = '';
+        document.getElementById('cpfCadastro').value = '';
+        alert('Dados enviados com êxito!')
     });
-
-    if (response.ok) {
-        alert('Post adicionado!');
-        document.getElementById('postForm').reset();
-    }
-});
-
-// Função para listar posts
-async function loadPosts() {
-    const response = await fetch(API_URL);
-    const posts = await response.json();
-    const postList = document.getElementById('postList');
-    postList.innerHTML = '';
-
-    posts.forEach(post => {
-        const li = document.createElement('li');
-        li.textContent = `${post.id}: ${post.title} - ${post.body}`;
-        postList.appendChild(li);
-    });
+    
 }
 
-// Função para atualizar um post
-document.getElementById('updateForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const id = document.getElementById('updateId').value;
-    const title = document.getElementById('updateTitle').value;
-    const body = document.getElementById('updateBody').value;
 
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, body }),
-    });
 
-    if (response.ok) {
-        alert('Post atualizado!');
-        document.getElementById('updateForm').reset();
+//GET   
+function buscarDados() {
+    const cpf = document.getElementById('cpfAtualizar').value;
+    fetch(`pessoas`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        const pessoaEncontrada = data.find(pessoa => pessoa.cpf === cpf);
+        
+        console.log(data)
+        if (pessoaEncontrada) {
+            document.getElementById('nomeAtualizar').value = pessoaEncontrada.nome;
+            document.getElementById('idadeAtualizar').value = pessoaEncontrada.idade;
+            document.getElementById('cpfAtualizar').value = pessoaEncontrada.cpf;
+            document.getElementById('id').value = pessoaEncontrada.id;
+        } else {
+            alert('Pessoa não encontrada!');
+        }
+    })
+}
+
+  
+
+//PUT
+    function atualizarDados() {
+        const id = document.getElementById('id').value;
+        const nome = document.getElementById('nomeAtualizar').value;
+        const idade = document.getElementById('idadeAtualizar').value;
+        const cpf = document.getElementById('cpfAtualizar').value;
+
+        fetch(`pessoas/${id}`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({ nome: nome, idade: idade,cpf: cpf})
+        })
+        .then(response => response.json())
+        .then(data => {
+            // limpa os inputs do formulário
+            document.getElementById('id').value = '';
+            document.getElementById('nomeAtualizar').value = '';
+            document.getElementById('idadeAtualizar').value = '';
+            document.getElementById('cpfAtualizar').value = '';
+        });
+        
     }
-});
 
-// Função para deletar um post
-document.getElementById('deleteForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const id = document.getElementById('deleteId').value;
+    
+//DELETE
+function deletarDados() {
+    const cpf = document.getElementById("cpf").value;
 
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE',
-    });
-
-    if (response.ok) {
-        alert('Post deletado!');
-        document.getElementById('deleteForm').reset();
+    fetch('pessoas')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('cpf').value = ''; // Clear the input field
+        data.forEach(obj => {
+          if (obj.cpf === cpf) {
+            fetch(`pessoas/${obj.id}`, {
+              method: 'DELETE',
+            })
+            .then(deleteResponse => {
+              if (deleteResponse.ok) {
+                alert('Usuário excluído com sucesso!');
+              } else {
+                alert('Erro ao excluir usuário.');
+              }
+            })
+            .catch(error => {
+              alert('Erro de rede ou ao processar a requisição.');
+            });
+          }
+        });
+      })
+      .catch(error => {
+        alert('Erro ao carregar os dados.');
+      });
     }
-});
+  
+  fetch(`pessoas`)
+.then(response => response.json())
+.then(data => {
+    const tabela = document.getElementById('tabela-corpo');
+    //Utilizado o loop ForEach para interar cada objeto no array retornado a API
+    data.forEach((objeto) => {
+        //Adicionado essa string de template ao conteudo HTML do corpo da tabela.
+        const linha = `<tr>
+            <td>${objeto.id}</td>
+            <td>${objeto.nome}</td>
+            <td>${objeto.idade}</td>
+            <td>${objeto.cpf}</td>
+        </tr>`;
+        tabela.innerHTML += linha;
+
+    })
+})
+  

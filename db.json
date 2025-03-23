@@ -1,14 +1,22 @@
 {
-  "posts": [
+  "pessoas": [
     {
-      "id": "67d7",
-      "title": "teste1",
-      "body": "conteudo1"
+      "nome": "Felipe",
+      "idade": "17",
+      "cpf": "111.111.222-22",
+      "id": 1
     },
     {
-      "title": "titulo3",
-      "body": "conteudo3",
-      "id": "cb14"
+      "nome": "Bruno",
+      "idade": "97",
+      "cpf": "000.000.000-01",
+      "id": 2
+    },
+    {
+      "nome": "Naopenseinumnomedecente",
+      "idade": "20",
+      "cpf": "999.888.777-66",
+      "id": 3
     }
   ]
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Delete</title>
+    <title>Get</title>
 </head>
 <body>
     <header>
@@ -17,21 +17,23 @@
         </nav>
     </header>
     
-    
 
-    <div class="container">
-        
-        <form>
-            <h3>DELETE</h3>
-            <p>Delete os seus dados do sistema.</p>
-            <br>
-            <label>CPF:</label>
-            <input type="text" id="cpf">
-            <br><br>
-            <input type="button" onclick="deletarDados()" value="Deletar">
-        </form>
+    <div class="container-get">
+        <h1>Dados Cadastrais - GET</h1>
+        <p>Consulte aqui, todos os dados cadastrados.</p>
+        <br>
+        <table>
+            <tbody id="tabela-corpo">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>CPF</th>
+                </tr>
+            </tbody>
+        </table>
     </div>
-   
+
     <footer>
         <a target="_blank" href="htpps://github.com/FelipeGSG">
             <img width="30" src="media/github.png" alt="">

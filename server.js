@@ -1,13 +1,44 @@
-// Configurar nosso Back End
-const express = require('express')
+//Importar a biblioteca json-server
+const jsonServer = require('json-server');
 
-// Instância
-const app = express()
+// Criar um instancia do servidor JsonServer 
+//Essa instancia é usada para criar e configurar o servidor
+const server = jsonServer.create();
 
-// Rota para FRONT END
-app.use(express.static('public'))
+//Criar um roteador com o arquivo db.json 
+//O roteador define as rotas do servidor. Ele utiliza um arquivo JSON para gerar a rota.
+const router = jsonServer.router('db.json');
 
-// Iniciar com localhost:3000
-app.listen(3000, () => {
-    console.log(`Servidor rodando, acesse o link http://localhost:3000`)
+//Funções que são executadas em cada requisição feita com o servidor
+//Importa os padrões JsonServer
+const middlewares = jsonServer.defaults();
+
+//Funções que são executadas em cada requisição feita com o servidor
+server.use(middlewares);
+
+//Define a porta em que o servidor irá rodar
+const porta = 3000;
+
+//Usa o roteador criado
+server.use(router);
+
+//Importa o módulo express
+const express = require('express');
+
+//Criando variavel instancia do express
+const app = express();
+
+//Configura o servidor para usar
+app.use(express.static('public'));
+
+//Defini a rota principal
+//Enviando o arquivo index.html
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/public/index.html');
 })
+
+//Inicia o servidor na porta definida e exibe uma mensagem no console
+server.listen(porta, () => {
+    console.log(`O servidor está rodando em http://localhost:${porta}`);
+})
+
